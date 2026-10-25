@@ -1,2 +1,52 @@
-# family-calendar-demo
-A privacy-safe local time-zone availability demo with fictional calendars, ICS import and shared free slots. By Blake Yuan.
+# Family Calendar Demo
+
+一个用来比较跨时区忙闲的轻量 Streamlit 演示。作者：**Blake Yuan**。
+
+这个独立演示保留原 Family Calendar 项目的主要思路：把几个人的本地日程放到同一时间轴上，找出可以约聊的空档。代码重新整理，全部内置日程为明确标注的虚构数据；不包含原仓库的个人日历、家庭身份或实际工作排班。
+
+## 能做什么
+
+- 对照三个可改名成员的当地时间、日期与 UTC 偏移。
+- 选择对照日期与时区，按实际小时展示；处理夏令时的 23/25 小时日。
+- 上传每位成员自己的 ICS，或直接使用附带的虚构示例。
+- 按时段手动标记忙碌/空闲，输入本次备注。
+- 查看共同空档与逐小时忙闲摘要。空档仅依据已填信息，不代表对方已确认可约。
+
+## 本地运行
+
+需要 Python 3.10 或更新版本。建议在项目目录创建虚拟环境：
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+streamlit run app.py
+```
+
+Windows 激活命令为 `.venv\Scripts\activate`。打开 Streamlit 命令实际显示的本地地址。此项目没有自带托管网址，也不会自动部署。
+
+首次进入默认展示 **2030-04-08 的虚构示例**，只为便于试用；这不是任何真实成员的日程。选择真实日期、调整时区，并关闭“载入虚构示例”后可导入自己的 ICS。
+
+## ICS 支持范围
+
+支持非循环 `VEVENT`、UTC 时间、标准 IANA `TZID`、按成员时区解释的浮动时间、全天事件和 `DURATION`。事件采用“开始包含、结束不包含”的边界；全天事件的 `DTEND` 也不包含在忙碌日期内。只要日历事件与某段有重叠，该段就计为忙碌。
+
+循环/例外事件（如 `RRULE`、`RDATE`、`EXDATE`、`RECURRENCE-ID`）和 `VFREEBUSY` 组件会提示并跳过，不能据此当作没有忙碌。缺少结束时间的定时事件、未知/自定义时区及夏令时歧义也会提示。内嵌 `VTIMEZONE` 定义未核验，按运行环境的 IANA 规则解释并提示限制。文件最大 1 MB；请导出展开后的有限日期范围，而不是把它作为完整日历服务的替代品。
+
+## 数据与原项目边界
+
+应用不请求日历账号，不调用外部日历 API，不发送消息，也不把上传日程或备注保存到文件。输入仅在当前 Streamlit 会话/进程中处理，刷新或结束会话后不保证保留。若将应用部署到远程服务器，上传内容会传到那台服务器处理；本地运行最适合私人日历。
+
+本演示**不含**原项目的固定家庭轮班、补觉规则、个人课程文件、持久留言板及文学摘录。原远程仓库未由此演示修改，原数据也未删除。`.gitignore` 默认忽略自行添加的 ICS，仅放行虚构示例；发布前仍需检查新增文件。
+
+## 验证与许可
+
+运行逻辑测试：
+
+```sh
+python -m unittest discover -s tests -v
+```
+
+测试覆盖 ICS 边界、跨日重叠、透明事件、循环规则提示、夏令时与手动覆盖。已通过15项测试，其中包含Streamlit实际冒烟测试、夏令时25小时日与手动覆盖。此结果不等于已部署或已完成多用户同步。
+
+本项目按 [MIT License](LICENSE) 发布。当前为本地演示版，不包含公共托管、登录权限、协作持久化或完整的 iCalendar 兼容性。

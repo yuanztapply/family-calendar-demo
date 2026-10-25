@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Blake Yuan//Family Calendar Fictional Demo//EN
+X-WR-CALNAME:FICTIONAL DEMO - NOT A REAL SCHEDULE
+BEGIN:VEVENT
+UID:fictional-demo-one@example.invalid
+DTSTAMP:20300101T000000Z
+DTSTART:20300408T093000Z
+DTEND:20300408T103000Z
+SUMMARY:FICTIONAL - Demo planning session
+DESCRIPTION:Entirely invented for this public demo. Not a real person or event.
+END:VEVENT
+BEGIN:VEVENT
+UID:fictional-demo-two@example.invalid
+DTSTAMP:20300101T000000Z
+DTSTART:20300408T160000Z
+DURATION:PT1H
+SUMMARY:FICTIONAL - Demo quiet hour
+DESCRIPTION:Entirely invented for this public demo. No real location.
+END:VEVENT
+END:VCALENDAR

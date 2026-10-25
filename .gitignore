@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+.streamlit/secrets.toml
+*.ics
+!demo-fictional.ics
+messages.json
